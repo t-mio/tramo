@@ -13,16 +13,17 @@ class HomePage:
             "kiriko nakami.jpeg",
             "siden1.jpeg",
             "teisho1.jpeg"
-            
         ]
-        number = random.randint(0,5)
+        number = random.randint(0, len(img_list) - 1)
+        filename = img_list[number]
 
-        #ホーム画面の写真を表示
+        # assets_dir が設定されているため `src=filename` で解決される
         background = ft.Image(
-            src=f"./src/assets/"+img_list[number],
+            src=filename,
             width=float("inf"),
             height=float("inf"),
-            fit=ft.ImageFit.COVER,)
+            fit=ft.ImageFit.COVER,
+        )
 
         content = ft.Container(
         )

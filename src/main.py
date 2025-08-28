@@ -28,6 +28,7 @@ class MobileApp:
         page.vertical_alignment = ft.MainAxisAlignment.START
         # ウィンドウの背景色を少しグレーに
         page.bgcolor = ft.Colors.GREY_200
+        page.theme_mode = ft.ThemeMode.LIGHT
 
         self.pages = [
             HomePage(page),
