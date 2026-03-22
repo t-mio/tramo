@@ -29,8 +29,8 @@ class MapPage:
         self.current_lat = None
         self.current_lng = None
         self.nearest_stop = None
-        self.selected_line = None   # None, "1", "2"
-        self.selected_dest = None   # None, "谷山", "郡元", "鹿児島駅前"
+        self.selected_line = None
+        self.selected_dest = None
         self.polyline_layer = self._create_polyline_layer()
         self.marker_layer = ftm.MarkerLayer(markers=self._create_stop_markers())
         self.current_marker_layer = ftm.MarkerLayer(markers=[])
@@ -93,7 +93,6 @@ class MapPage:
             pass
 
     def _refresh_markers(self, e=None):
-        # 電停フィルター
         filtered_stops = self.stops
         if self.selected_line is not None:
             line_num = int(self.selected_line)
@@ -197,10 +196,8 @@ class MapPage:
             trains = get_train_positions(self.stops_coords)
             markers = []
             for train in trains:
-                # 系統フィルター
                 if self.selected_line is not None and train["line"] != self.selected_line:
                     continue
-                # 行き先フィルター
                 if self.selected_dest is not None:
                     if self.selected_dest == "谷山" and not (train["line"] == "1" and train["direction"] == "下り"):
                         continue
@@ -208,7 +205,6 @@ class MapPage:
                         continue
                     if self.selected_dest == "鹿児島駅前" and train["direction"] != "上り":
                         continue
-
                 bg_color = "#1565C0" if train["line"] == "1" else "#C62828"
                 markers.append(ftm.Marker(
                     content=ft.Column([
@@ -296,7 +292,7 @@ class MapPage:
 
     def _go_to_timetable(self, dlg, stop_name):
         self.page.close(dlg)
-        self.page.pubsub.send_all({"type": "nav", "index": 2, "stop": stop_name})
+        self.page.pubsub.send_all_on_control_session({"type": "nav", "index": 2, "stop": stop_name})
 
     def create_page(self):
         self.nearest_card = ft.Container(
