@@ -6,11 +6,6 @@ class AnnouncementPage:
         self.page = page
 
     def create_page(self):
-        content = ft.Container(
-        )
+        content = ft.Container()
 
-        return ft.Stack(
-            [
-                content
-            ]
-        )
+        return ft.Stack([content])

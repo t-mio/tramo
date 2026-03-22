@@ -6,23 +6,21 @@ class SelectStop:
     def __init__(self):
         pass
 
-
-    def dropdown_changed(self,e):
+    def dropdown_changed(self, e):
         pass
+
     def get_options(self):
-        stops=[
-            {"name":"鹿児島駅前"},
-            {"name":"鹿児島中央駅前"},
-            {"name":"鹿児島駅前"},
+        stops = [
+            {"name": "鹿児島駅前"},
+            {"name": "鹿児島中央駅前"},
+            {"name": "鹿児島駅前"},
         ]
-        
-        options=[]
+
+        options = []
         for stop in stops:
-            options.append(
-                ft.DropdownOption(key=stop["name"])
-            )
+            options.append(ft.DropdownOption(key=stop["name"]))
         return options
-    
+
     def get_direction_options(self):
         # プリロード済みキャッシュから取得し、lines をそのままオプション化
         tram_data = get_tram_data()
@@ -35,20 +33,15 @@ class SelectStop:
     def create_select_stop(self):
         return ft.Row(
             [
-                 ft.Dropdown(
+                ft.Dropdown(
                     editable=True,
                     options=self.get_options(),
-                    on_change=self.dropdown_changed
+                    on_change=self.dropdown_changed,
                 ),
-                
                 ft.Dropdown(
-                        editable=True,
-                        options=self.get_direction_options(),
-                        on_change=self.dropdown_changed
-                    )
-
+                    editable=True,
+                    options=self.get_direction_options(),
+                    on_change=self.dropdown_changed,
+                ),
             ]
         )
-    
-    
-
