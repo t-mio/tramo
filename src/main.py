@@ -166,7 +166,7 @@ class MobileApp:
 
 def main():
     app = MobileApp()
-    ft.app(target=app.main)
+    ft.app(target=app.main, view=ft.AppView.WEB_BROWSER)
 
 
 main()
