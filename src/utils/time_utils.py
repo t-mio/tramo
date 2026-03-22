@@ -1,7 +1,9 @@
 """時刻計算ユーティリティ"""
 
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from typing import Optional
+
+JST = timezone(timedelta(hours=9))
 
 
 def time_to_minutes(time_str: str) -> int:
@@ -22,7 +24,7 @@ def minutes_to_time(minutes: int) -> str:
 
 def get_current_time() -> str:
     """現在時刻を HH:MM 形式で取得"""
-    return datetime.now().strftime("%H:%M")
+    return datetime.now(JST).strftime("%H:%M")
 
 
 def calculate_wait_time(current_time: str, train_time: str) -> str:
@@ -38,14 +40,9 @@ def calculate_wait_time(current_time: str, train_time: str) -> str:
 
 
 def get_day_type(dt: Optional[datetime] = None) -> str:
-    """曜日区分を返す（"平日" | "土曜" | "日曜祝日"）。
-
-    祝日判定は簡易化のため未実装で、日曜日を「日曜祝日」とし、
-    土曜日は「土曜」、それ以外は「平日」を返す。
-    必要であれば祝日ライブラリ導入を検討。
-    """
-    target = dt or datetime.now()
-    weekday = target.weekday()  # 0=Mon ... 6=Sun
+    """曜日区分を返す"""
+    target = dt or datetime.now(JST)
+    weekday = target.weekday()
     if weekday == 5:
         return "土曜"
     if weekday == 6:
