@@ -150,8 +150,7 @@ class MobileApp:
 
 
 def main():
-    app = MobileApp()
-    ft.app(target=app.main, view=ft.AppView.WEB_BROWSER)
+    ft.app(target=lambda page: MobileApp().main(page), view=ft.AppView.WEB_BROWSER)
 
 
 main()
