@@ -70,6 +70,8 @@ class MobileApp:
         self._running = True
         self._page = page
 
+        session_id = str(id(page))
+
         def on_message(msg):
             if isinstance(msg, dict) and msg.get("type") == "nav":
                 index = msg.get("index", 0)
@@ -83,7 +85,7 @@ class MobileApp:
                 except Exception:
                     pass
 
-        page.pubsub.subscribe(on_message)
+        page.pubsub.subscribe_topic(session_id, on_message)
 
         def on_disconnect(e):
             self._running = False
@@ -97,7 +99,7 @@ class MobileApp:
                 index = self.current_page_index
 
                 if index == 1:
-                    threading.Event().wait(5.0)  # マップは5秒（page.update不要にして安定化）
+                    threading.Event().wait(5.0)
                 else:
                     if index == 0:
                         wait = 3.0
