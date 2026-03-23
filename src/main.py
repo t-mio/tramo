@@ -74,6 +74,8 @@ class MobileApp:
 
         def on_message(msg):
             if isinstance(msg, dict) and msg.get("type") == "nav":
+                if msg.get("session_id") != session_id:
+                    return
                 index = msg.get("index", 0)
                 stop = msg.get("stop")
                 if stop and hasattr(self.pages[index], 'set_stop'):
@@ -85,7 +87,7 @@ class MobileApp:
                 except Exception:
                     pass
 
-        page.pubsub.subscribe_topic(session_id, on_message)
+        page.pubsub.subscribe(on_message)
 
         def on_disconnect(e):
             self._running = False
