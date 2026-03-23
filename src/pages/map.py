@@ -292,7 +292,7 @@ class MapPage:
 
     def _go_to_timetable(self, dlg, stop_name):
         self.page.close(dlg)
-        self.page.pubsub.send_all_on_control_session({"type": "nav", "index": 2, "stop": stop_name})
+        self.page.pubsub.send_topic(str(id(self.page)), {"type": "nav", "index": 2, "stop": stop_name})
 
     def create_page(self):
         self.nearest_card = ft.Container(
