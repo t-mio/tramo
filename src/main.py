@@ -39,7 +39,7 @@ class MobileApp:
 
         self.pages = [
             HomePage(page, self),
-            MapPage(page),
+            MapPage(page, self),
             TramPage(page),
             SchedulePage(page),
             PaymentPage(page),
@@ -69,25 +69,6 @@ class MobileApp:
 
         self._running = True
         self._page = page
-
-        session_id = str(id(page))
-
-        def on_message(msg):
-            if isinstance(msg, dict) and msg.get("type") == "nav":
-                if msg.get("session_id") != session_id:
-                    return
-                index = msg.get("index", 0)
-                stop = msg.get("stop")
-                if stop and hasattr(self.pages[index], 'set_stop'):
-                    self.pages[index].set_stop(stop)
-                self.on_nav_change(index)
-                self._nav_bar.selected_index = index
-                try:
-                    self._nav_bar.update()
-                except Exception:
-                    pass
-
-        page.pubsub.subscribe(on_message)
 
         def on_disconnect(e):
             self._running = False
