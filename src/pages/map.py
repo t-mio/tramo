@@ -22,8 +22,9 @@ LINE2_STOPS = [
 
 
 class MapPage:
-    def __init__(self, page: ft.Page):
+    def __init__(self, page: ft.Page, app=None):
         self.page = page
+        self.app = app
         self.stops = self._load_stops()
         self.stops_coords = {s["name"]: {"lat": s["lat"], "lng": s["lng"]} for s in self.stops}
         self.current_lat = None
@@ -292,12 +293,16 @@ class MapPage:
 
     def _go_to_timetable(self, dlg, stop_name):
         self.page.close(dlg)
-        self.page.pubsub.send_all({
-            "type": "nav",
-            "index": 2,
-            "stop": stop_name,
-            "session_id": str(id(self.page))
-        })
+        if self.app:
+            tram_page = self.app.pages[2]
+            if hasattr(tram_page, 'set_stop'):
+                tram_page.set_stop(stop_name)
+            self.app.on_nav_change(2)
+            self.app._nav_bar.selected_index = 2
+            try:
+                self.app._nav_bar.update()
+            except Exception:
+                pass
 
     def create_page(self):
         self.nearest_card = ft.Container(
